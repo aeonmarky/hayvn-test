@@ -7,7 +7,18 @@
 
 ### Running
 
-Go to the project root directory (./hayvn-test) and run ./vendor/bin/sail up to start the application
+- On the project root, run the following command (this may take several minutes to complete). 
+```angular2html
+docker run --rm \
+-u "$(id -u):$(id -g)" \
+-v "$(pwd):/var/www/html" \
+-w /var/www/html \
+laravelsail/php81-composer:latest \
+composer install --ignore-platform-reqs
+```
+
+-  `./vendor/bin/sail up` to start the application. Once the application's containers have been started you may check the app if running at: http://localhost.
+
 
 ### Configuring Aggregated Messages API endpoint
 
@@ -15,7 +26,7 @@ On the project root directory, open the file .env and change the value of AGGREG
 
 ### Messages Endpoint
 
-Messages endpoint is located at http://localhost/api/message
+Messages endpoint is located at: http://localhost/api/message
 
 ### Notes
 
