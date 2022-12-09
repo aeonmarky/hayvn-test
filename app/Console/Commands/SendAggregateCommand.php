@@ -8,6 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Artisan command that sends the aggregated
@@ -103,8 +104,21 @@ class SendAggregateCommand extends Command
             ];
         });
 
+        // if payload is empty, we just continue...
+        if (empty($this->_payload)) {
+            // Print out the request payload
+            Log::debug("Empty payload... exiting");
+            return;
+        }
+
         // json encode the array payload
-        $payload = json_encode($this->_payload);
+        $payload = json_encode($this->_payload, JSON_PRETTY_PRINT);
+
+        // Print out the request payload
+        Log::debug("Request payload: " . $payload);
+
+        // Print out the endpoint
+        Log::debug("Aggregated Messages Endpoint: " . env('AGGREGATED_MESSAGES_URI'));
 
         // send the request to aggregate-messages endpoint
         $response = Http::withHeaders([
@@ -113,6 +127,9 @@ class SendAggregateCommand extends Command
         ])->withBody(
             $payload, 'application/json'
         )->post(env('AGGREGATED_MESSAGES_URI'));
+
+        // Print out the http response status
+        Log::debug("Response status: " . $response->status());
 
         // check if request is a failure
         if ($response->successful() !== true) {

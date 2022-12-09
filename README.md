@@ -24,6 +24,8 @@ composer install --ignore-platform-reqs
 
 On the project root directory, open the file `.env` and change the value of `AGGREGATED_MESSAGES_URI` and go back to terminal where sail is running and restart sail by pressing `Ctrl+C` and run it again using `./vendor/bin/sail up` in order for the changes to take effect.
 
+Debug logs are written at <project_root>/storage/logs/laravel.log
+
 ### Messages Endpoint
 
 Messages endpoint is located at: `http://localhost/api/message`
@@ -41,3 +43,5 @@ Messages endpoint is located at: `http://localhost/api/message`
 "uuid": "97eda42b-5686-47b4-a4fd-e30f6f63121c"
 }
 ```
+- The background worker that processs the messages is located at: `<project_root>/app/Console/Commands/SendAggregateCommand.php`
+- Logs are stored at <project_root>/storage/logs/laravel.log
